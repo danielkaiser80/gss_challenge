@@ -17,8 +17,8 @@ class CustomerRepositoryTest {
     private CustomerRepository repository;
 
     @Test
-    void should_load_repository() {
+    void shouldLoadCustomersFromCsv() {
         List<Customer> customers = repository.findAll();
-        assertThat(customers).isEmpty();
+        assertThat(customers).hasSize(5);
     }
 }
