@@ -13,7 +13,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="INSURANCE_NUMBER" type="varchar(8)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="DATE_OF_BIRTH" type="date">
                 <constraints nullable="false"/>

@@ -18,7 +18,10 @@ class CustomerRepositoryTest {
 
     @Test
     void shouldLoadCustomersFromCsv() {
-        List<Customer> customers = repository.findAll();
+        final List<Customer> customers = repository.findAll();
         assertThat(customers).hasSize(5);
+
+        // all customer numbers have a length of 8 chars
+        assertThat(customers).extracting(Customer::getInsuranceNumber).extracting(String::length).containsOnly(8);
     }
 }

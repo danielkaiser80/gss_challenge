@@ -21,10 +21,12 @@ public class SpringLiquibaseWithContext extends SpringLiquibase implements Appli
     @Override
     public void afterPropertiesSet() throws LiquibaseException {
         logger.info("Starting Liquibase synchronously");
-        StopWatch watch = new StopWatch();
+
+        final StopWatch watch = new StopWatch();
         watch.start();
         super.afterPropertiesSet();
         watch.stop();
+
         logger.info("All Liquibase migrations finished successfully in {} ms", watch.getTotalTimeMillis());
     }
 }
