@@ -62,19 +62,11 @@ public class CustomerService {
         final LocalDate now = LocalDate.now(clock);
 
         // if birth date is greater then current date, then do not count this month
-        int currentMonth = now.getMonthValue();
-        if (dateOfBirth.getDayOfMonth() > now.getDayOfMonth()) {
-            currentMonth = currentMonth - 1;
-        }
+        int correctedMonth = now.getMonthValue() - ((dateOfBirth.getDayOfMonth() > now.getDayOfMonth()) ? 1 : 0);
 
         // if birth month exceeds current month, then do not count this year
-        int currentYear = now.getYear();
-        if (dateOfBirth.getMonthValue() > currentMonth) {
-            currentYear = currentYear - 1;
-        }
-
-        // calculate difference
-        return currentYear - dateOfBirth.getYear();
+        int correctedYear = now.getYear() - ((dateOfBirth.getMonthValue() > correctedMonth) ? 1 : 0);
+        return correctedYear - dateOfBirth.getYear();
     }
 
     int getAgeFactor(int ageOfCustomer) {
