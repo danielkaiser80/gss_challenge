@@ -1,6 +1,7 @@
 package danielkaiser.gss.challenge.service;
 
 import danielkaiser.gss.challenge.controller.dto.CustomerCreationDto;
+import danielkaiser.gss.challenge.controller.dto.CustomerDto;
 import danielkaiser.gss.challenge.data.CustomerRepository;
 import danielkaiser.gss.challenge.domain.Customer;
 import danielkaiser.gss.challenge.mapper.CustomerMapper;
@@ -20,7 +21,7 @@ public class CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
 
-    public Customer createCustomer(final CustomerCreationDto customerCreationDto) {
+    public CustomerDto createCustomer(final CustomerCreationDto customerCreationDto) {
         log.info("Creating customer from {}", customerCreationDto);
 
         // get all insurance numbers first, so that we can check, that we do not create one which already exists
@@ -29,8 +30,7 @@ public class CustomerService {
         final String newInsuranceNumber = generateNewInsuranceNumber(insuranceNumbers);
 
         final Customer newCustomer = customerMapper.toEntityBuilder(customerCreationDto).insuranceNumber(newInsuranceNumber).build();
-        customerRepository.save(newCustomer);
-        return newCustomer;
+        return customerMapper.toDto(customerRepository.save(newCustomer));
     }
 
     private String generateNewInsuranceNumber(final Set<String> insuranceNumbers) {
