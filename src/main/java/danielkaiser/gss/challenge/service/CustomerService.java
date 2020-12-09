@@ -9,6 +9,7 @@ import danielkaiser.gss.challenge.util.GenerateShortUuid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @Log4j2
 @RequiredArgsConstructor
+@Transactional
 public class CustomerService {
 
     private final CustomerMapper customerMapper;
