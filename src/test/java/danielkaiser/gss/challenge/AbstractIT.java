@@ -20,7 +20,7 @@ import java.io.IOException;
 @WebAppConfiguration
 @Transactional
 @Rollback
-public abstract class AbstractTest {
+public abstract class AbstractIT {
 
     protected MockMvc mvc;
 

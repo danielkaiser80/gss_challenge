@@ -1,6 +1,6 @@
 package danielkaiser.gss.challenge.controller;
 
-import danielkaiser.gss.challenge.AbstractTest;
+import danielkaiser.gss.challenge.AbstractIT;
 import danielkaiser.gss.challenge.controller.dto.CustomerCreationDto;
 import danielkaiser.gss.challenge.data.CustomerRepository;
 import danielkaiser.gss.challenge.domain.Customer;
@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.hasLength;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class CustomerResourceTest extends AbstractTest {
+class CustomerResourceIT extends AbstractIT {
 
     private static final String URI = "/api/customer";
 
