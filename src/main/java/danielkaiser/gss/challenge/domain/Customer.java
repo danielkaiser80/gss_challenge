@@ -1,6 +1,7 @@
 package danielkaiser.gss.challenge.domain;
 
-import lombok.Data;
+import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,10 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@Jacksonized
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Customer {
 
     @Id
