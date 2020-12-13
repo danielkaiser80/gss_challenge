@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasLength;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -56,5 +57,45 @@ class CustomerResourceIT extends AbstractIT {
 
         // same size means, that the numbers are actually unique already and this is what we verify here
         assertThat(insuranceNumbers).hasSameSizeAs(uniqueInsuranceNumbers);
+    }
+
+    @Test
+    void shouldThrowExceptionOnCreateWithMissingField() throws Exception {
+
+        final CustomerCreationDto dto = CustomerCreationDto.builder()
+                .firstName("Daniel")
+                .lastName("Kaiser")
+                .inceptionOfPolicy(LocalDate.now())
+                .build();
+
+        final byte[] inputJson = super.convertObjectToJsonBytes(dto);
+
+        mvc.perform(MockMvcRequestBuilders.post(URI)
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldRetrieveExistingCustomer() throws Exception {
+
+        // get the insurance number for Thomas Danzig
+        final String thomas_danzig = "Thomas Danzig";
+        final String insuranceNumber = customerRepository.findByName(thomas_danzig).map(Customer::getInsuranceNumber).orElseThrow();
+
+        // TODO verif also the payment rate
+        mvc.perform(MockMvcRequestBuilders.get(URI + "/" + insuranceNumber)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(equalTo(thomas_danzig)))
+                .andExpect(jsonPath("$.insuranceNumber").value(equalTo(insuranceNumber)))
+                .andExpect(jsonPath("$.dateOfBirth").value(equalTo("1990-09-13")))
+                .andExpect(jsonPath("$.inceptionOfPolicy").value(equalTo("2010-01-01")));
+    }
+
+    @Test
+    void shouldNotRetrieveCustomerWithWrongInsuranceNumber() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get(URI + "/fakeNumber")
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isNotFound());
     }
 }

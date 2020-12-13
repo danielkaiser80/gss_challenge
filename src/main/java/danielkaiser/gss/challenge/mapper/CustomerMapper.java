@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
 
-    @Mapping(expression = "java( dto.getFirstName() + dto.getLastName() )", target = "name")
+    @Mapping(expression = "java( dto.getFirstName() + \" \" + dto.getLastName() )", target = "name")
     @Mapping(target = "insuranceNumber", ignore = true)
     @Mapping(target = "id", ignore = true)
     Customer.CustomerBuilder toEntityBuilder(CustomerCreationDto dto);
