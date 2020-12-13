@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 public interface CustomerMapper {
 
     @Mapping(expression = "java( dto.getFirstName() + dto.getLastName() )", target = "name")
+    @Mapping(target = "insuranceNumber", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Customer.CustomerBuilder toEntityBuilder(CustomerCreationDto dto);
 
     CustomerDto toDto(Customer customer);

@@ -2,6 +2,7 @@ package danielkaiser.gss.challenge.domain;
 
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 public class Customer {
 
     @Id
+    @Nullable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
