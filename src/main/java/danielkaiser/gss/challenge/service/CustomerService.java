@@ -54,8 +54,13 @@ public class CustomerService {
         final int ageOfCustomer = getAgeOfCustomer(customer.getDateOfBirth());
         final int percentage = getAgeFactor(ageOfCustomer);
 
+        // TODO calculate the discount
+        // The insurer offers a loyalty discount for every customer which is accumulated at 1% per
+        // every completed calendar year since the inception date.
+        // The discount is applied for the current month even if the inception date is the last day of the month.
 
-        return BigDecimal.ZERO;
+
+        return BigDecimal.valueOf(percentage * BASE_RATE / 100.0);
     }
 
     int getAgeOfCustomer(LocalDate dateOfBirth) {

@@ -33,9 +33,8 @@ class CustomerServiceIT {
         final BigDecimal rateForCustomer = customerService.calculateRateForCustomer(thomasDanzig);
 
         // TODO here we actually expect a rate of 273EUR in 2020
-        assertThat(rateForCustomer).isEqualTo(BigDecimal.ZERO);
+        assertThat(rateForCustomer).isEqualTo(BigDecimal.valueOf(300.0));
     }
-
 
 
 
