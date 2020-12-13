@@ -6,12 +6,10 @@ import danielkaiser.gss.challenge.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -35,10 +33,21 @@ public class CustomerResource {
      * @return the insurance number, which was assigned to the new customer
      */
     @PostMapping
-    public ResponseEntity<String> registerClient(@Valid @RequestBody CustomerCreationDto customerCreationDto) throws URISyntaxException {
+    public ResponseEntity<String> createCustomer(@Valid @RequestBody CustomerCreationDto customerCreationDto) throws URISyntaxException {
         final CustomerDto result = customerService.createCustomer(customerCreationDto);
         return ResponseEntity.created(new URI("/api/customer/" + result.getId()))
                 .body(result.getInsuranceNumber());
+    }
+
+    /**
+     * GET  /api/customer : retrieve a customer via his insurance number.
+     *
+     * @param insuranceNumber the insurance number
+     * @return 200 and the customer with payment rate; or 404 if customer not found
+     */
+    @GetMapping
+    public ResponseEntity<CustomerDto> findCustomer(@Valid @NotNull String insuranceNumber) {
+        return ResponseEntity.of(customerService.findCustomer(insuranceNumber));
     }
 
 }

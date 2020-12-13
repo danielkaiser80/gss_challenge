@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -98,5 +99,9 @@ public class CustomerService {
         // if the birth / inception month exceeds current month, then do not count this year
         int correctedYear = currentYear - ((startDate.getMonthValue() > correctedMonthValue) ? 1 : 0);
         return correctedYear - startDate.getYear();
+    }
+
+    public Optional<CustomerDto> findCustomer(String insuranceNumber) {
+        return Optional.empty();
     }
 }
