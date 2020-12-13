@@ -1,14 +1,24 @@
 package danielkaiser.gss.challenge.controller;
 
-import danielkaiser.gss.challenge.AbstractIT;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import danielkaiser.gss.challenge.ChallengeApplication;
 import danielkaiser.gss.challenge.controller.dto.CustomerCreationDto;
 import danielkaiser.gss.challenge.data.CustomerRepository;
 import danielkaiser.gss.challenge.domain.Customer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -22,12 +32,28 @@ import static org.hamcrest.Matchers.hasLength;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class CustomerResourceIT extends AbstractIT {
+@SpringBootTest(classes = ChallengeApplication.class)
+@WebAppConfiguration
+@Transactional
+@Rollback
+class CustomerResourceIT {
 
     private static final String URI = "/api/customer";
 
     @Autowired
+    private WebApplicationContext webApplicationContext;
+
+    @Autowired
     private CustomerRepository customerRepository;
+
+    private MockMvc mvc;
+    private ObjectMapper objectMapper;
+
+    @BeforeEach
+    protected void setUp() {
+        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        objectMapper = Jackson2ObjectMapperBuilder.json().build();
+    }
 
     @Test
     void shouldCreateNewCustomer() throws Exception {
@@ -39,7 +65,7 @@ class CustomerResourceIT extends AbstractIT {
                 .inceptionOfPolicy(LocalDate.now())
                 .build();
 
-        final byte[] inputJson = super.convertObjectToJsonBytes(dto);
+        final byte[] inputJson = objectMapper.writeValueAsBytes(dto);
 
         final MockHttpServletResponse response =
                 mvc.perform(MockMvcRequestBuilders.post(URI)
@@ -68,7 +94,7 @@ class CustomerResourceIT extends AbstractIT {
                 .inceptionOfPolicy(LocalDate.now())
                 .build();
 
-        final byte[] inputJson = super.convertObjectToJsonBytes(dto);
+        final byte[] inputJson = objectMapper.writeValueAsBytes(dto);
 
         mvc.perform(MockMvcRequestBuilders.post(URI)
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
@@ -98,4 +124,5 @@ class CustomerResourceIT extends AbstractIT {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isNotFound());
     }
+
 }
