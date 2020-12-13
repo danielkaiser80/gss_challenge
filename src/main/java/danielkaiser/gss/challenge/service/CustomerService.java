@@ -51,30 +51,23 @@ public class CustomerService {
 
     BigDecimal calculateRateForCustomer(final Customer customer) {
 
-        final int ageOfCustomer = getAgeOfCustomer(customer.getDateOfBirth());
+        final int ageOfCustomer = calculateAgeOfCustomer(customer.getDateOfBirth());
         final int percentage = getAgeFactor(ageOfCustomer);
 
-        // TODO calculate the discount
-        // The insurer offers a loyalty discount for every customer which is accumulated at 1% per
-        // every completed calendar year since the inception date.
-        // The discount is applied for the current month even if the inception date is the last day of the month.
+        final int fullYearsSinceInception = calculateFullYearsSinceInception(customer.getInceptionOfPolicy());
 
-
-        return BigDecimal.valueOf(percentage * BASE_RATE / 100.0);
+        return BigDecimal.valueOf(percentage * BASE_RATE / 100.0 * (1 - fullYearsSinceInception / 100.0));
     }
 
-    int getAgeOfCustomer(LocalDate dateOfBirth) {
+    int calculateAgeOfCustomer(final LocalDate dateOfBirth) {
         final LocalDate now = LocalDate.now(clock);
 
         // if birth date is greater then current date, then do not count this month
         int correctedMonth = now.getMonthValue() - ((dateOfBirth.getDayOfMonth() > now.getDayOfMonth()) ? 1 : 0);
-
-        // if birth month exceeds current month, then do not count this year
-        int correctedYear = now.getYear() - ((dateOfBirth.getMonthValue() > correctedMonth) ? 1 : 0);
-        return correctedYear - dateOfBirth.getYear();
+        return calculateYearsBetween(dateOfBirth, correctedMonth, now.getYear());
     }
 
-    int getAgeFactor(int ageOfCustomer) {
+    int getAgeFactor(final int ageOfCustomer) {
         if (ageOfCustomer < 0) {
             throw new IllegalStateException("Customer with negative age is not possible");
         }
@@ -93,4 +86,17 @@ public class CustomerService {
         return 0;
     }
 
+    int calculateFullYearsSinceInception(final LocalDate inceptionDate) {
+        final LocalDate now = LocalDate.now(clock);
+
+        // according to the requirements specification, the discount is even then applied, when the inception date is on the last day of the month
+        // this means, the day of the date is not relevant for this calculation; for the month and year it is actually like calculating the birthdate
+        return calculateYearsBetween(inceptionDate, now.getMonthValue(), now.getYear());
+    }
+
+    private int calculateYearsBetween(final LocalDate startDate, final int correctedMonthValue, final int currentYear) {
+        // if the birth / inception month exceeds current month, then do not count this year
+        int correctedYear = currentYear - ((startDate.getMonthValue() > correctedMonthValue) ? 1 : 0);
+        return correctedYear - startDate.getYear();
+    }
 }

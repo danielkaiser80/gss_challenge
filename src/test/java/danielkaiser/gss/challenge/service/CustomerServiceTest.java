@@ -43,7 +43,7 @@ class CustomerServiceTest {
     @ParameterizedTest(name = "birthDate={0}, expectedAge={1}")
     @MethodSource("birthDateProvider")
     void shouldCalculateAgeCorrectly(LocalDate birthDate, int expectedAge) {
-        assertThat(service.getAgeOfCustomer(birthDate)).isEqualTo(expectedAge);
+        assertThat(service.calculateAgeOfCustomer(birthDate)).isEqualTo(expectedAge);
     }
 
     private static Stream<Arguments> birthDateProvider() {
@@ -56,6 +56,27 @@ class CustomerServiceTest {
                 Arguments.of(LocalDate.of(1978, 8, 24), 42),
                 Arguments.of(LocalDate.of(2019, 12, 22), 1),
                 Arguments.of(LocalDate.of(2019, 12, 23), 0)
+        );
+    }
+
+    @ParameterizedTest(name = "inceptionDate={0}, expected full years={1}")
+    @MethodSource("fullYearsProvider")
+    void shouldCalculateFullYearsCorrectly(LocalDate inceptionDate, int expectedFullYears) {
+        assertThat(service.calculateFullYearsSinceInception(inceptionDate)).isEqualTo(expectedFullYears);
+    }
+
+    private static Stream<Arguments> fullYearsProvider() {
+        return Stream.of(
+                Arguments.of(LocalDate.of(2020, 12, 12), 0),
+                Arguments.of(LocalDate.of(2019, 12, 22), 1),
+                Arguments.of(LocalDate.of(2010, 1, 1), 10),
+                Arguments.of(LocalDate.of(2010, 1, 31), 10),
+                Arguments.of(LocalDate.of(2020, 12, 22), 0),
+                Arguments.of(LocalDate.of(1980, 8, 24), 40),
+                Arguments.of(LocalDate.of(1978, 8, 24), 42),
+                Arguments.of(LocalDate.of(2019, 12, 22), 1),
+                Arguments.of(LocalDate.of(2019, 12, 23), 1),
+                Arguments.of(LocalDate.of(2019, 12, 31), 1)
         );
     }
 }
