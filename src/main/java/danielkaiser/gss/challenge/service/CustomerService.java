@@ -102,6 +102,9 @@ public class CustomerService {
     }
 
     public Optional<CustomerDto> findCustomer(String insuranceNumber) {
-        return Optional.empty();
+        final Optional<Customer> customer = customerRepository.findByInsuranceNumber(insuranceNumber);
+
+        // TODO add the payment rate here
+        return customer.map(customerMapper::toDto);
     }
 }

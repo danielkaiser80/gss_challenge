@@ -45,9 +45,11 @@ public class CustomerResource {
      * @param insuranceNumber the insurance number
      * @return 200 and the customer with payment rate; or 404 if customer not found
      */
-    @GetMapping
-    public ResponseEntity<CustomerDto> findCustomer(@Valid @NotNull String insuranceNumber) {
+    @GetMapping(value="{insuranceNumber}")
+    public ResponseEntity<CustomerDto> findCustomer( @PathVariable @NotNull String insuranceNumber) {
         return ResponseEntity.of(customerService.findCustomer(insuranceNumber));
     }
+
+    // TODO add retrieval method for all customers with payments
 
 }
