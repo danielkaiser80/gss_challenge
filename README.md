@@ -10,7 +10,7 @@ The green spectrum insurance uses this application for managing their customers.
   via `java -jar target/challenge-0.0.1-SNAPSHOT.jar` 
 
 ## Using the application
-* The application starts a server on <localhost:8080> and configures several REST endpoints under the URI
-  <localhost:8080/api/customers>.
+* The application starts a server on <http://localhost:8080> and configures several REST endpoints under the URI
+  <http://localhost:8080/api/customers>.
 * The application also contains further documentation for the REST endpoints using OpenAPI and how to use them, as well as example implementations using Swagger.  
 You can find these under the URL <http://localhost:8080/swagger-ui.html>.
