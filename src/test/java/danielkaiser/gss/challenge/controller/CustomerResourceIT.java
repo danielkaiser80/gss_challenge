@@ -72,7 +72,7 @@ class CustomerResourceIT {
         final MockHttpServletResponse response =
                 mvc.perform(MockMvcRequestBuilders.post(URI).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
                         .andExpect(status().isCreated())
-                        .andExpect(jsonPath("$").value(hasLength(8)))
+                        .andExpect(jsonPath("$.insuranceNumber").value(hasLength(8)))
                         .andReturn()
                         .getResponse();
 

@@ -19,7 +19,7 @@ class CustomerRepositoryIT {
     @Test
     void shouldLoadCustomersFromCsv() {
         final List<Customer> customers = repository.findAll();
-        assertThat(customers).hasSize(5);
+        assertThat(customers).hasSizeGreaterThanOrEqualTo(5); // five from liquibase and maybe more from other use of the app
 
         // all customer numbers have a length of 8 chars
         assertThat(customers).extracting(Customer::getInsuranceNumber).extracting(String::length).containsOnly(8);
