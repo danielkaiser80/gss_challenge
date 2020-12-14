@@ -7,12 +7,14 @@ import danielkaiser.gss.challenge.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -47,10 +49,20 @@ public class CustomerResource {
      * @return 200 and the customer with payment rate; or 404 if customer not found
      */
     @GetMapping(value="{insuranceNumber}")
+    @Transactional(readOnly = true)
     public ResponseEntity<CustomerDto> findCustomer( @PathVariable @NotNull String insuranceNumber) {
         return ResponseEntity.of(customerService.findCustomer(insuranceNumber));
     }
 
-    // TODO add retrieval method for all customers with payments
+    /**
+     * GET  /api/customers : retrieve all customers with payment information.
+     *
+     * @return 200 and a list of customers with payment rates (maybe empty)
+     */
+    @GetMapping
+    @Transactional(readOnly = true)
+    public ResponseEntity<List< CustomerDto>> retrieveAllCustomers() {
+        return ResponseEntity.ok(customerService.retrieveAllCustomers());
+    }
 
 }

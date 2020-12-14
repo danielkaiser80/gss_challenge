@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,11 +53,17 @@ public class CustomerService {
         return generated;
     }
 
+    @Transactional(readOnly = true)
     public Optional<CustomerDto> findCustomer(final String insuranceNumber) {
         return customerRepository.findByInsuranceNumber(insuranceNumber).map(customer -> {
             final BigDecimal rateForCustomer = calculateRateForCustomer(customer);
             return customerMapper.toDtoBuilder(customer).paymentRate(rateForCustomer);
         }).map(CustomerDto.CustomerDtoBuilder::build);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CustomerDto> retrieveAllCustomers() {
+        return Collections.emptyList();
     }
 
     BigDecimal calculateRateForCustomer(final Customer customer) {
@@ -108,6 +116,5 @@ public class CustomerService {
         int correctedYear = currentYear - ((startDate.getMonthValue() > correctedMonthValue) ? 1 : 0);
         return correctedYear - startDate.getYear();
     }
-
 
 }

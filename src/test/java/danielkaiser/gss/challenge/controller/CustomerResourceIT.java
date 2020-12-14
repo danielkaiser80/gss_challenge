@@ -68,8 +68,7 @@ class CustomerResourceIT {
         final byte[] inputJson = objectMapper.writeValueAsBytes(dto);
 
         final MockHttpServletResponse response =
-                mvc.perform(MockMvcRequestBuilders.post(URI)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+                mvc.perform(MockMvcRequestBuilders.post(URI).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
                         .andExpect(status().isCreated())
                         .andExpect(jsonPath("$").value(hasLength(8)))
                         .andReturn()
@@ -96,8 +95,7 @@ class CustomerResourceIT {
 
         final byte[] inputJson = objectMapper.writeValueAsBytes(dto);
 
-        mvc.perform(MockMvcRequestBuilders.post(URI)
-                .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+        mvc.perform(MockMvcRequestBuilders.post(URI).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
                 .andExpect(status().isBadRequest());
     }
 
@@ -108,8 +106,7 @@ class CustomerResourceIT {
         final String thomas_danzig = "Thomas Danzig";
         final String insuranceNumber = customerRepository.findByName(thomas_danzig).map(Customer::getInsuranceNumber).orElseThrow();
 
-        mvc.perform(MockMvcRequestBuilders.get(URI + "/" + insuranceNumber)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        mvc.perform(MockMvcRequestBuilders.get(URI + "/" + insuranceNumber).contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(equalTo(thomas_danzig)))
                 .andExpect(jsonPath("$.insuranceNumber").value(equalTo(insuranceNumber)))
@@ -123,6 +120,13 @@ class CustomerResourceIT {
         mvc.perform(MockMvcRequestBuilders.get(URI + "/fakeNumber")
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldRetrieveAllCustomers() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get(URI).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
     }
 
 }
