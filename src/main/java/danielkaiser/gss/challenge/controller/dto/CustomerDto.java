@@ -3,6 +3,7 @@ package danielkaiser.gss.challenge.controller.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Value;
+import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 public class CustomerDto {
     Long id;
     String name;
+    @Length(min = 8, max = 8)
     String insuranceNumber;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     LocalDate dateOfBirth;

@@ -3,9 +3,18 @@ package danielkaiser.gss.challenge.controller;
 import danielkaiser.gss.challenge.controller.dto.CustomerCreatedDto;
 import danielkaiser.gss.challenge.controller.dto.CustomerCreationDto;
 import danielkaiser.gss.challenge.controller.dto.CustomerDto;
+import danielkaiser.gss.challenge.controller.dto.InsuranceNumberDto;
 import danielkaiser.gss.challenge.service.CustomerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +25,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.*;
 
 /**
  * REST controller for managing customers.
@@ -29,30 +38,61 @@ public class CustomerResource {
 
     private final CustomerService customerService;
 
-    /**
-     * POST  /api/customers : create a new customer and return his insurance number.
-     *
-     * @param customerCreationDto the customer information we want to create
-     * @return the insurance number, which was assigned to the new customer
-     */
+    @Operation(summary = "Create customer", description = "Create a new customer with the given information and return his insurance number.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successful created, insurance number returned.",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = InsuranceNumberDto.class), examples = {
+                            @ExampleObject(value = """
+                                    {
+                                      "firstName": "Daniel",
+                                      "lastName": "Kaiser",
+                                      "dateOfBirth": "1980-08-04",
+                                      "inceptionOfPolicy": "2010-01-01"
+                                    }""")
+                    })}
+            ),
+            @ApiResponse(responseCode = "400", description = "Invalid input.", content = @Content(mediaType = TEXT_PLAIN_VALUE, examples = {@ExampleObject(value = "Input data is not valid.")})),
+    })
     @PostMapping
-    public ResponseEntity<String> createCustomer(@Valid @RequestBody CustomerCreationDto customerCreationDto) throws URISyntaxException {
+    public ResponseEntity<InsuranceNumberDto> createCustomer(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = CustomerCreationDto.class), examples = {
+                    @ExampleObject(value = """
+                            {
+                              "insuranceNumber": "58e71225"
+                            }""")
+            }))
+            @Valid @RequestBody CustomerCreationDto customerCreationDto) throws URISyntaxException {
         final CustomerCreatedDto result = customerService.createCustomer(customerCreationDto);
         return ResponseEntity.created(new URI("/api/customers/" + result.getId()))
-                .body(result.getInsuranceNumber());
+                .body(InsuranceNumberDto.of(result.getInsuranceNumber()));
     }
 
-    /**
-     * GET  /api/customers/{insuranceNumber} : retrieve a customer via his insurance number.
-     *
-     * @param insuranceNumber the insurance number
-     * @return 200 and the customer with payment rate; or 404 if customer not found
-     */
-    @GetMapping(value="{insuranceNumber}")
+
+    @Operation(summary = "Retrieve a customer", description = "Retrieve a customer using his insurance number.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieved.",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = CustomerDto.class), examples = {
+                            @ExampleObject(value = """
+                                    {
+                                      "id": 17,
+                                      "firstName": "Daniel",
+                                      "lastName": "Kaiser",
+                                      "insuranceNumber": "58e71225"
+                                      "dateOfBirth": "1980-08-04",
+                                      "inceptionOfPolicy": "2010-01-01",
+                                      "paymentRate": 270
+                                    }""")
+                    })}
+            ),
+            @ApiResponse(responseCode = "404", description = "No customer with the supplied insurance number exists.", content = @Content(mediaType = ALL_VALUE, examples = {@ExampleObject})),
+    })
+    @GetMapping(value = "{insuranceNumber}")
     @Transactional(readOnly = true)
-    public ResponseEntity<CustomerDto> findCustomer( @PathVariable @NotNull String insuranceNumber) {
+    public ResponseEntity<CustomerDto> findCustomer(@Parameter(description = "The insurance number", examples = {@ExampleObject(value = "58e71225")})
+                                                    @PathVariable @NotNull String insuranceNumber) {
         return ResponseEntity.of(customerService.findCustomer(insuranceNumber));
     }
+
 
     /**
      * GET  /api/customers : retrieve all customers with payment information.
@@ -61,8 +101,10 @@ public class CustomerResource {
      */
     @GetMapping
     @Transactional(readOnly = true)
-    public ResponseEntity<List< CustomerDto>> retrieveAllCustomers() {
-        return ResponseEntity.ok(customerService.retrieveAllCustomers());
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public List<CustomerDto> retrieveAllCustomers() {
+        return customerService.retrieveAllCustomers();
     }
 
 }
