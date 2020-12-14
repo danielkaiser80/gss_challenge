@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -55,15 +54,24 @@ public class CustomerService {
 
     @Transactional(readOnly = true)
     public Optional<CustomerDto> findCustomer(final String insuranceNumber) {
-        return customerRepository.findByInsuranceNumber(insuranceNumber).map(customer -> {
-            final BigDecimal rateForCustomer = calculateRateForCustomer(customer);
-            return customerMapper.toDtoBuilder(customer).paymentRate(rateForCustomer);
-        }).map(CustomerDto.CustomerDtoBuilder::build);
+        log.info("Loading customer with insurance number {}", insuranceNumber);
+        return customerRepository.findByInsuranceNumber(insuranceNumber)
+                .map(this::createBuilderFromCustomer)
+                .map(CustomerDto.CustomerDtoBuilder::build);
     }
 
     @Transactional(readOnly = true)
     public List<CustomerDto> retrieveAllCustomers() {
-        return Collections.emptyList();
+        log.info("Retrieving all customers");
+        return customerRepository.findAll().stream()
+                .map(this::createBuilderFromCustomer)
+                .map(CustomerDto.CustomerDtoBuilder::build)
+                .collect(Collectors.toList());
+    }
+
+    private CustomerDto.CustomerDtoBuilder createBuilderFromCustomer(final Customer customer) {
+        final BigDecimal rateForCustomer = calculateRateForCustomer(customer);
+        return customerMapper.toDtoBuilder(customer).paymentRate(rateForCustomer);
     }
 
     BigDecimal calculateRateForCustomer(final Customer customer) {

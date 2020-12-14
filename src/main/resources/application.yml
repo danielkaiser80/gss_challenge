@@ -10,10 +10,11 @@ spring:
       write_dates_as_timestamps: true
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    show-sql: true
+    open-in-view: false
+    show-sql: false
     generate-ddl: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
   h2:
     console:
       enabled: true
