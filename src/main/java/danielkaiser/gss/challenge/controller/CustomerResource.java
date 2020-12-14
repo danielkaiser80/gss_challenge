@@ -20,7 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * REST controller for managing customers.
  */
 @RestController
-@RequestMapping(value = "/api/customer", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/customers", produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @Log4j2
 public class CustomerResource {
@@ -28,7 +28,7 @@ public class CustomerResource {
     private final CustomerService customerService;
 
     /**
-     * POST  /api/customer : create a new customer and return his insurance number.
+     * POST  /api/customers : create a new customer and return his insurance number.
      *
      * @param customerCreationDto the customer information we want to create
      * @return the insurance number, which was assigned to the new customer
@@ -36,12 +36,12 @@ public class CustomerResource {
     @PostMapping
     public ResponseEntity<String> createCustomer(@Valid @RequestBody CustomerCreationDto customerCreationDto) throws URISyntaxException {
         final CustomerCreatedDto result = customerService.createCustomer(customerCreationDto);
-        return ResponseEntity.created(new URI("/api/customer/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/customers/" + result.getId()))
                 .body(result.getInsuranceNumber());
     }
 
     /**
-     * GET  /api/customer : retrieve a customer via his insurance number.
+     * GET  /api/customers/{insuranceNumber} : retrieve a customer via his insurance number.
      *
      * @param insuranceNumber the insurance number
      * @return 200 and the customer with payment rate; or 404 if customer not found

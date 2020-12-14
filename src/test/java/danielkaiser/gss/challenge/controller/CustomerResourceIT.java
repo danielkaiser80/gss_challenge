@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Rollback
 class CustomerResourceIT {
 
-    private static final String URI = "/api/customer";
+    private static final String URI = "/api/customers";
 
     @Autowired
     private WebApplicationContext webApplicationContext;
