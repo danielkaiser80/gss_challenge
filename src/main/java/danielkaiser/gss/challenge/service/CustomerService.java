@@ -1,5 +1,6 @@
 package danielkaiser.gss.challenge.service;
 
+import danielkaiser.gss.challenge.controller.dto.CustomerCreatedDto;
 import danielkaiser.gss.challenge.controller.dto.CustomerCreationDto;
 import danielkaiser.gss.challenge.controller.dto.CustomerDto;
 import danielkaiser.gss.challenge.data.CustomerRepository;
@@ -30,7 +31,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final Clock clock;
 
-    public CustomerDto createCustomer(final CustomerCreationDto customerCreationDto) {
+    public CustomerCreatedDto createCustomer(final CustomerCreationDto customerCreationDto) {
         log.info("Creating customer from {}", customerCreationDto);
 
         // get all insurance numbers first, so that we can check, that we do not create one which already exists
@@ -39,7 +40,7 @@ public class CustomerService {
         final String newInsuranceNumber = generateNewInsuranceNumber(insuranceNumbers);
 
         final Customer newCustomer = customerMapper.toEntityBuilder(customerCreationDto).insuranceNumber(newInsuranceNumber).build();
-        return customerMapper.toDto(customerRepository.save(newCustomer));
+        return customerMapper.toCreatedDto(customerRepository.save(newCustomer));
     }
 
     private String generateNewInsuranceNumber(final Set<String> insuranceNumbers) {
@@ -48,6 +49,13 @@ public class CustomerService {
             generated = GenerateShortUuid.generate(8);
         } while (insuranceNumbers.contains(generated));
         return generated;
+    }
+
+    public Optional<CustomerDto> findCustomer(final String insuranceNumber) {
+        return customerRepository.findByInsuranceNumber(insuranceNumber).map(customer -> {
+            final BigDecimal rateForCustomer = calculateRateForCustomer(customer);
+            return customerMapper.toDtoBuilder(customer).paymentRate(rateForCustomer);
+        }).map(CustomerDto.CustomerDtoBuilder::build);
     }
 
     BigDecimal calculateRateForCustomer(final Customer customer) {
@@ -101,10 +109,5 @@ public class CustomerService {
         return correctedYear - startDate.getYear();
     }
 
-    public Optional<CustomerDto> findCustomer(String insuranceNumber) {
-        final Optional<Customer> customer = customerRepository.findByInsuranceNumber(insuranceNumber);
 
-        // TODO add the payment rate here
-        return customer.map(customerMapper::toDto);
-    }
 }

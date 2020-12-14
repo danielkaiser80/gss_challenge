@@ -108,14 +108,14 @@ class CustomerResourceIT {
         final String thomas_danzig = "Thomas Danzig";
         final String insuranceNumber = customerRepository.findByName(thomas_danzig).map(Customer::getInsuranceNumber).orElseThrow();
 
-        // TODO verif also the payment rate
         mvc.perform(MockMvcRequestBuilders.get(URI + "/" + insuranceNumber)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(equalTo(thomas_danzig)))
                 .andExpect(jsonPath("$.insuranceNumber").value(equalTo(insuranceNumber)))
                 .andExpect(jsonPath("$.dateOfBirth").value(equalTo("1990-09-13")))
-                .andExpect(jsonPath("$.inceptionOfPolicy").value(equalTo("2010-01-01")));
+                .andExpect(jsonPath("$.inceptionOfPolicy").value(equalTo("2010-01-01")))
+                .andExpect(jsonPath("$.paymentRate").value(equalTo(270.0)));
     }
 
     @Test

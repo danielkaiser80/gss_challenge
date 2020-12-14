@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Value;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Value
@@ -16,4 +17,5 @@ public class CustomerDto {
     LocalDate dateOfBirth;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     LocalDate inceptionOfPolicy;
+    BigDecimal paymentRate;
 }

@@ -1,5 +1,6 @@
 package danielkaiser.gss.challenge.controller;
 
+import danielkaiser.gss.challenge.controller.dto.CustomerCreatedDto;
 import danielkaiser.gss.challenge.controller.dto.CustomerCreationDto;
 import danielkaiser.gss.challenge.controller.dto.CustomerDto;
 import danielkaiser.gss.challenge.service.CustomerService;
@@ -34,7 +35,7 @@ public class CustomerResource {
      */
     @PostMapping
     public ResponseEntity<String> createCustomer(@Valid @RequestBody CustomerCreationDto customerCreationDto) throws URISyntaxException {
-        final CustomerDto result = customerService.createCustomer(customerCreationDto);
+        final CustomerCreatedDto result = customerService.createCustomer(customerCreationDto);
         return ResponseEntity.created(new URI("/api/customer/" + result.getId()))
                 .body(result.getInsuranceNumber());
     }
