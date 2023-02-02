@@ -1,5 +1,6 @@
 package danielkaiser.gss.challenge.liquibase;
 
+import jakarta.persistence.EntityManager;
 import liquibase.change.custom.CustomTaskChange;
 import liquibase.database.Database;
 import liquibase.exception.ValidationErrors;
@@ -10,7 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.persistence.EntityManager;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 

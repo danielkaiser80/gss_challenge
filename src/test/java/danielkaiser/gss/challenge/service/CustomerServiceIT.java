@@ -26,8 +26,8 @@ class CustomerServiceIT {
 
         final BigDecimal rateForCustomer = customerService.calculateRateForCustomer(thomasDanzig);
 
-        // According to the specification, Mr Danzig should have a rate of 273 € -- but as he actually has already finished ten years (and the specifications were written last year), this is corrected here
-        assertThat(rateForCustomer).isEqualTo(BigDecimal.valueOf(270.0));
+        // According to the specification, Mr Danzig should have a rate of 273 € -- but as he actually has already finished ten years (and the specifications were written earlier), this is corrected here
+        assertThat(rateForCustomer).isEqualTo(BigDecimal.valueOf(264.0));
     }
 
 }

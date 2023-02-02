@@ -87,7 +87,7 @@ public class CustomerService {
     int calculateAgeOfCustomer(final LocalDate dateOfBirth) {
         final LocalDate now = LocalDate.now(clock);
 
-        // if birth date is greater then current date, then do not count this month
+        // if birthdate is greater than current date, then do not count this month
         int correctedMonth = now.getMonthValue() - ((dateOfBirth.getDayOfMonth() > now.getDayOfMonth()) ? 1 : 0);
         return calculateYearsBetween(dateOfBirth, correctedMonth, now.getYear());
     }
@@ -114,7 +114,7 @@ public class CustomerService {
     int calculateFullYearsSinceInception(final LocalDate inceptionDate) {
         final LocalDate now = LocalDate.now(clock);
 
-        // according to the requirements specification, the discount is even then applied, when the inception date is on the last day of the month
+        // according to the requirements' specification, the discount is even then applied, when the inception date is on the last day of the month
         // this means, the day of the date is not relevant for this calculation; for the month and year it is actually like calculating the birthdate
         return calculateYearsBetween(inceptionDate, now.getMonthValue(), now.getYear());
     }

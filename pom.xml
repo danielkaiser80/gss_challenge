@@ -5,8 +5,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.0.0</version>
+        <relativePath/>
     </parent>
     <groupId>danielkaiser.gss</groupId>
     <artifactId>challenge</artifactId>
@@ -15,8 +15,8 @@
     <description>CSS coding challenge</description>
 
     <properties>
-        <java.version>16</java.version>
-        <mapstruct.version>1.4.1.Final</mapstruct.version>
+        <java.version>18</java.version>
+        <mapstruct.version>1.5.3.Final</mapstruct.version>
     </properties>
 
     <dependencies>
@@ -109,14 +109,14 @@
         <dependency>
             <groupId>com.mattbertolini</groupId>
             <artifactId>liquibase-slf4j</artifactId>
-            <version>2.0.0</version>
+            <version>4.1.0</version>
         </dependency>
 
         <!-- Documentation -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.0</version>
+            <version>1.6.13</version>
         </dependency>
 
         <!-- Test dependencies -->
@@ -160,8 +160,8 @@
                                 <version>0.1.0</version>
                             </path>
                         </annotationProcessorPaths>
-                        <source>16</source>
-                        <target>16</target>
+                        <source>18</source>
+                        <target>18</target>
                     </configuration>
                 </plugin>
             </plugins>

@@ -14,14 +14,14 @@ import java.time.LocalDate;
 @Builder
 @ToString
 public class CustomerCreationDto {
-    @Schema(example = "Daniel", required = true)
+    @Schema(example = "Daniel", requiredMode = Schema.RequiredMode.REQUIRED)
     String firstName;
-    @Schema(example = "Kaiser", required = true)
+    @Schema(example = "Kaiser", requiredMode = Schema.RequiredMode.REQUIRED)
     String lastName;
-    @Schema(example = "1980-08-04", required = true, description = "The birth date of the customer")
+    @Schema(example = "1980-08-04", requiredMode = Schema.RequiredMode.REQUIRED, description = "The birth date of the customer")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     LocalDate dateOfBirth;
-    @Schema(example = "2010-01-01", required = true, description = "The date of the inception of the contract")
+    @Schema(example = "2010-01-01", requiredMode = Schema.RequiredMode.REQUIRED, description = "The date of the inception of the contract")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     LocalDate inceptionOfPolicy;
 }

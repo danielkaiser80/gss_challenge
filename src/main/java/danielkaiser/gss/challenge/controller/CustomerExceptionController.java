@@ -11,17 +11,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Log4j2
 public class CustomerExceptionController {
 
-    @ExceptionHandler(value = DataIntegrityViolationException.class)
-    public ResponseEntity<Object> exception(DataIntegrityViolationException exception) {
-        log.error("Input data is not valid.", exception);
-        return new ResponseEntity<>("Input data is not valid.", HttpStatus.BAD_REQUEST);
-    }
+  @ExceptionHandler(value = DataIntegrityViolationException.class)
+  public ResponseEntity<Object> exception(
+          DataIntegrityViolationException exception
+  ) {
+    log.error("Input data is not valid.", exception);
+    return new ResponseEntity<>(
+            "Input data is not valid.",
+            HttpStatus.BAD_REQUEST
+    );
+  }
 
-    @ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<String> exception(RuntimeException exception) {
-        log.error("Exception occurred", exception);
-        return new ResponseEntity<>("Exception occurred", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
+  @ExceptionHandler(value = RuntimeException.class)
+  public ResponseEntity<String> exception(RuntimeException exception) {
+    log.error("Exception occurred", exception);
+    return new ResponseEntity<>(
+            "Exception occurred",
+            HttpStatus.INTERNAL_SERVER_ERROR
+    );
+  }
 }
-

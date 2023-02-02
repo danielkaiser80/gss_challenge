@@ -1,8 +1,8 @@
 package danielkaiser.gss.challenge.util;
 
-import lombok.experimental.UtilityClass;
-
 import java.util.UUID;
+
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class GenerateShortUuid {
@@ -11,5 +11,4 @@ public class GenerateShortUuid {
         final UUID uuid = UUID.randomUUID();
         return uuid.toString().substring(0, length);
     }
-
 }

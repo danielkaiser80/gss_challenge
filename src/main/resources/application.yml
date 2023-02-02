@@ -13,12 +13,17 @@ spring:
     open-in-view: false
     show-sql: false
     generate-ddl: false
+    defer-datasource-initialization: false
     hibernate:
       ddl-auto: validate
   h2:
     console:
       enabled: true
       path: /h2-console
+  main:
+    # FIXME we should get rid of this, but Liquibase currently prevents us from
+    allow-circular-references: true
+
 
 server:
   address: localhost
