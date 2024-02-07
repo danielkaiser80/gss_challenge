@@ -10,16 +10,16 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
   @Mapping(
-          expression = "java( dto.getFirstName() + \" \" + dto.getLastName() )",
-          target = "name"
+    expression = "java( dto.getFirstName() + \" \" + dto.getLastName() )",
+    target = "name"
   )
   @Mapping(target = "id", ignore = true) // set by Hibernate
   @Mapping(target = "insuranceNumber", ignore = true)
-    // set by business logic
+  // set by business logic
   Customer.CustomerBuilder toEntityBuilder(CustomerCreationDto dto);
 
   @Mapping(target = "paymentRate", ignore = true)
-    // calculated by business logic
+  // calculated by business logic
   CustomerDto.CustomerDtoBuilder toDtoBuilder(Customer customer);
 
   CustomerCreatedDto toCreatedDto(Customer customer);

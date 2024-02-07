@@ -24,6 +24,10 @@ spring:
     # FIXME we should get rid of this, but Liquibase currently prevents us from
     allow-circular-references: true
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html
+
 
 server:
   address: localhost

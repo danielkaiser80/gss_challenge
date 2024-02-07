@@ -13,12 +13,12 @@ public class CustomerExceptionController {
 
   @ExceptionHandler(value = DataIntegrityViolationException.class)
   public ResponseEntity<Object> exception(
-          DataIntegrityViolationException exception
+    DataIntegrityViolationException exception
   ) {
     log.error("Input data is not valid.", exception);
     return new ResponseEntity<>(
-            "Input data is not valid.",
-            HttpStatus.BAD_REQUEST
+      "Input data is not valid.",
+      HttpStatus.BAD_REQUEST
     );
   }
 
@@ -26,8 +26,8 @@ public class CustomerExceptionController {
   public ResponseEntity<String> exception(RuntimeException exception) {
     log.error("Exception occurred", exception);
     return new ResponseEntity<>(
-            "Exception occurred",
-            HttpStatus.INTERNAL_SERVER_ERROR
+      "Exception occurred",
+      HttpStatus.INTERNAL_SERVER_ERROR
     );
   }
 }

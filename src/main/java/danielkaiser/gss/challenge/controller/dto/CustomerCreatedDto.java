@@ -5,7 +5,6 @@ import org.hibernate.validator.constraints.Length;
 
 @Builder
 public record CustomerCreatedDto(
-        Long id,
-        @Length(min = 8, max = 8) String insuranceNumber
-) {
-}
+  Long id,
+  @Length(min = 8, max = 8) String insuranceNumber
+) {}
