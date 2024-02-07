@@ -10,6 +10,6 @@ import org.hibernate.validator.constraints.Length;
 @Value(staticConstructor = "of")
 public class InsuranceNumberDto {
     @Length(min = 8, max = 8)
-    @Schema(required = true)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     String insuranceNumber;
 }

@@ -75,8 +75,8 @@ public class CustomerResource {
             ))
             @Valid @RequestBody CustomerCreationDto customerCreationDto) throws URISyntaxException {
         final CustomerCreatedDto result = customerService.createCustomer(customerCreationDto);
-        return ResponseEntity.created(new URI("/api/customers/" + result.getId()))
-                .body(InsuranceNumberDto.of(result.getInsuranceNumber()));
+        return ResponseEntity.created(new URI("/api/customers/" + result.id()))
+                .body(InsuranceNumberDto.of(result.insuranceNumber()));
     }
 
 
