@@ -4,21 +4,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.Builder;
-import lombok.ToString;
-import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-@Value
 @Jacksonized
 @Builder
-@ToString
-public class CustomerCreationDto {
-
+public record CustomerCreationDto(
   @Schema(example = "Daniel", requiredMode = Schema.RequiredMode.REQUIRED)
-  String firstName;
+  String firstName,
 
   @Schema(example = "Kaiser", requiredMode = Schema.RequiredMode.REQUIRED)
-  String lastName;
+  String lastName,
 
   @Schema(
     example = "1980-08-04",
@@ -26,7 +21,7 @@ public class CustomerCreationDto {
     description = "The birth date of the customer"
   )
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  LocalDate dateOfBirth;
+  LocalDate dateOfBirth,
 
   @Schema(
     example = "2010-01-01",
@@ -34,5 +29,5 @@ public class CustomerCreationDto {
     description = "The date of the inception of the contract"
   )
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  LocalDate inceptionOfPolicy;
-}
+  LocalDate inceptionOfPolicy
+) {}

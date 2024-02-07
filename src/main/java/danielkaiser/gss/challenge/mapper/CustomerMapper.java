@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
   @Mapping(
-    expression = "java( dto.getFirstName() + \" \" + dto.getLastName() )",
+    expression = "java( dto.firstName() + \" \" + dto.lastName() )",
     target = "name"
   )
   @Mapping(target = "id", ignore = true) // set by Hibernate

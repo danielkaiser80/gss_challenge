@@ -5,28 +5,22 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Builder;
-import lombok.ToString;
-import lombok.Value;
 import org.hibernate.validator.constraints.Length;
 
-@Value
 @Builder
-@ToString
-public class CustomerDto {
-
-  @Schema(description = "The database ID", example = "1")
-  Long id;
+public record CustomerDto(
+  @Schema(description = "The database ID", example = "1") Long id,
 
   @Schema(
     description = "The full name of the customer",
     example = "Daniel Kaiser",
     requiredMode = Schema.RequiredMode.REQUIRED
   )
-  String name;
+  String name,
 
   @Length(min = 8, max = 8)
   @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-  String insuranceNumber;
+  String insuranceNumber,
 
   @Schema(
     example = "1980-08-04",
@@ -34,7 +28,7 @@ public class CustomerDto {
     description = "The birth date of the customer"
   )
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  LocalDate dateOfBirth;
+  LocalDate dateOfBirth,
 
   @Schema(
     example = "2010-01-01",
@@ -42,12 +36,12 @@ public class CustomerDto {
     description = "The date of the inception of the contract"
   )
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  LocalDate inceptionOfPolicy;
+  LocalDate inceptionOfPolicy,
 
   @Schema(
     description = "The monthly payment amount in Euro.",
     example = "270",
     requiredMode = Schema.RequiredMode.REQUIRED
   )
-  BigDecimal paymentRate;
-}
+  BigDecimal paymentRate
+) {}
