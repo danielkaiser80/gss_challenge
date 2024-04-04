@@ -28,7 +28,6 @@ springdoc:
   swagger-ui:
     path: /swagger-ui/index.html
 
-
 server:
   address: localhost
   port: 8080
