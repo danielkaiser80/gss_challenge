@@ -107,7 +107,7 @@ public class CustomerService {
   int calculateAgeOfCustomer(final LocalDate dateOfBirth) {
     final LocalDate now = LocalDate.now(clock);
 
-    // if birthdate is greater than current date, then do not count this month
+    // if birthdate is greater than the current date, then do not count this month
     int correctedMonth =
       now.getMonthValue() -
       ((dateOfBirth.getDayOfMonth() > now.getDayOfMonth()) ? 1 : 0);
@@ -152,7 +152,7 @@ public class CustomerService {
     final int correctedMonthValue,
     final int currentYear
   ) {
-    // if the birth / inception month exceeds current month, then do not count this year
+    // if the birth / start month exceeds the current month, then do not count this year
     int correctedYear =
       currentYear - ((startDate.getMonthValue() > correctedMonthValue) ? 1 : 0);
     return correctedYear - startDate.getYear();

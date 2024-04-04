@@ -93,7 +93,7 @@ class CustomerResourceIT {
       .toList();
     final Set<String> uniqueInsuranceNumbers = new HashSet<>(insuranceNumbers);
 
-    // same size means, that the numbers are actually unique already and this is what we verify here
+    // the same size means that the numbers are actually unique already, and this is what we verify here
     assertThat(insuranceNumbers).hasSameSizeAs(uniqueInsuranceNumbers);
   }
 
@@ -154,7 +154,7 @@ class CustomerResourceIT {
 
   /**
    * This test retrieves all customers and verifies the customers loaded by Liquibase.
-   * Thus, it only runs correctly, when there are no other customers loaded in the database.
+   * Thus, it only runs correctly when there are no other customers loaded in the database.
    */
   @Test
   void shouldRetrieveAllCustomers() throws Exception {
