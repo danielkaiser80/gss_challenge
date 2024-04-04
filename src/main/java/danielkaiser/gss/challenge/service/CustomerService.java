@@ -81,7 +81,7 @@ public class CustomerService {
       .stream()
       .map(this::createBuilderFromCustomer)
       .map(CustomerDto.CustomerDtoBuilder::build)
-      .collect(Collectors.toList());
+      .toList();
   }
 
   private CustomerDto.CustomerDtoBuilder createBuilderFromCustomer(
@@ -115,11 +115,7 @@ public class CustomerService {
   }
 
   int getAgeFactor(final int ageOfCustomer) {
-    if (ageOfCustomer < 0) {
-      throw new IllegalStateException(
-        "Customer with negative age is not possible"
-      );
-    }
+    assert ageOfCustomer >= 0 : "Customer with negative age is not possible";
     if (ageOfCustomer < 12) {
       return 50;
     }
@@ -132,6 +128,7 @@ public class CustomerService {
     if (ageOfCustomer < 67) {
       return 125;
     }
+
     return 0;
   }
 
